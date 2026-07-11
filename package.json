@@ -1,0 +1,36 @@
+{
+  "name": "coldpaper",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Back up any file onto printable paper. 100% in your browser: encrypt, print as QR codes, restore by pointing your phone camera at the pages.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build --config vite.offline.config.ts && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "icons": "node scripts/make-icons.mjs"
+  },
+  "dependencies": {
+    "fflate": "0.8.3",
+    "pdf-lib": "1.17.1",
+    "qrcode": "1.5.4",
+    "zxing-wasm": "3.1.0"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "1.0.2",
+    "@types/node": "26.1.1",
+    "@types/qrcode": "1.5.6",
+    "pdfjs-dist": "5.6.205",
+    "typescript": "7.0.2",
+    "vite": "5.4.21",
+    "vite-plugin-singlefile": "2.0.3",
+    "vitest": "2.1.9"
+  }
+}
