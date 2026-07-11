@@ -156,6 +156,14 @@ button:disabled {
   margin-bottom: 1.5rem;
 }
 
+.masthead-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 .brand {
   display: flex;
   align-items: baseline;
@@ -185,6 +193,35 @@ button:disabled {
   border: 1px solid var(--line);
   padding: 0.1rem 0.45rem;
   border-radius: 2px;
+}
+
+.repo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  background: var(--card);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.repo-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.repo-link svg {
+  flex: none;
 }
 
 .tagline {
