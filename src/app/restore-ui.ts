@@ -5,9 +5,14 @@ import { restoreBackup, type RestoredFile } from '../core/pipeline';
 import { scanFeedback } from '../scan/beep';
 import { startCamera, type CameraSession } from '../scan/camera';
 import { QrDecoder } from '../scan/decode';
+import { renderPdfPages } from '../scan/pdf-import';
 import { $, el, fmtBytes, fmtHexGroups, safeFileName } from './dom';
 
 const MAX_IMPORT_DIMENSION = 2600;
+
+function isPdfFile(file: File): boolean {
+  return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+}
 
 export function initRestoreUi(): void {
   const cameraBtn = $<HTMLButtonElement>('#camera-btn');
@@ -132,7 +137,9 @@ export function initRestoreUi(): void {
     target.addEventListener('drop', (event) => {
       event.preventDefault();
       dropTarget.classList.remove('dragging');
-      const files = [...(event.dataTransfer?.files ?? [])].filter((f) => f.type.startsWith('image/'));
+      const files = [...(event.dataTransfer?.files ?? [])].filter(
+        (f) => f.type.startsWith('image/') || isPdfFile(f),
+      );
       if (files.length) void importFiles(files);
     });
   }
@@ -149,21 +156,47 @@ export function initRestoreUi(): void {
     importProgress.hidden = false;
     let found = 0;
     for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (isPdfFile(file)) {
+        found += await importPdf(qr, file, i + 1, files.length);
+        continue;
+      }
       importProgress.textContent = `Reading image ${i + 1} of ${files.length}...`;
       try {
-        const imageData = await imageDataFromFile(files[i]);
+        const imageData = await imageDataFromFile(file);
         const payloads = await qr.decode(imageData);
         found += payloads.length;
         handleDecoded(payloads);
       } catch {
-        note(`Couldn't read "${files[i].name}" as an image.`);
+        note(`Couldn't read "${file.name}" as an image.`);
       }
     }
     importProgress.textContent =
       found === 0
-        ? 'No QR codes found in those images. Make sure each code is sharp, flat and well-lit.'
-        : `Done: found ${found} code${found === 1 ? '' : 's'} in ${files.length} image${files.length === 1 ? '' : 's'}.`;
+        ? 'No QR codes found in those files. Make sure each code is sharp, flat and well-lit.'
+        : `Done: found ${found} code${found === 1 ? '' : 's'} in ${files.length} file${files.length === 1 ? '' : 's'}.`;
     renderStatus();
+  }
+
+  /** Pull codes straight out of a PDF: the generated backup PDF or a scanner's PDF output. */
+  async function importPdf(qr: QrDecoder, file: File, fileIndex: number, fileCount: number): Promise<number> {
+    let found = 0;
+    try {
+      const data = await file.arrayBuffer();
+      for await (const page of renderPdfPages(data)) {
+        importProgress.textContent =
+          fileCount > 1
+            ? `File ${fileIndex} of ${fileCount}: PDF page ${page.pageIndex} of ${page.pageCount}...`
+            : `Reading PDF page ${page.pageIndex} of ${page.pageCount}...`;
+        const imageData = page.context.getImageData(0, 0, page.canvas.width, page.canvas.height);
+        const payloads = await qr.decode(imageData);
+        found += payloads.length;
+        handleDecoded(payloads);
+      }
+    } catch {
+      note(`Couldn't read "${file.name}" as a PDF.`);
+    }
+    return found;
   }
 
   async function imageDataFromFile(file: File): Promise<ImageData> {

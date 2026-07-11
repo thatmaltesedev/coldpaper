@@ -124,6 +124,44 @@ describe('printed-PDF round trip', () => {
     expect(restored.bytes).toEqual(fileBytes);
   });
 
+  it('the dense preset fully decodes at the in-app PDF-import DPI', async () => {
+    // The restore tab renders imported PDFs at PDF_IMPORT_DPI. Even the
+    // tightest preset (v40, 177 modules per code) must decode losslessly at
+    // that resolution, or the "restore from the PDF itself" path would
+    // silently under-deliver.
+    const { PDF_IMPORT_DPI } = await import('../src/scan/pdf-import');
+    const preset3 = presetById('dense');
+    const denseFile = randomBytes(rand, 30 * 1024);
+    const backup3 = await createBackup({
+      fileName: 'dense-import.bin',
+      fileBytes: denseFile,
+      chunkSize: preset3.chunkSize,
+      redundancyPercent: 25,
+    });
+    const pdf3 = await buildPdf({
+      backup: backup3,
+      fileName: 'dense-import.bin',
+      fileSize: denseFile.length,
+      preset: preset3,
+      paper: A4,
+      redundancyPercent: 25,
+      createdOn: '2026-07-11',
+      appUrl: 'https://example.invalid/coldpaper',
+    });
+    const pages = await renderPdf(pdf3, PDF_IMPORT_DPI);
+    const collector = new ChunkCollector();
+    let found = 0;
+    for (const page of pages.slice(1)) {
+      for (const code of await decodeRgba(page, CODES_PER_PAGE + 4)) {
+        found++;
+        collector.add(code);
+      }
+    }
+    expect(found).toBe(backup3.plan.totalChunks);
+    const restored = await restoreBackup(collector.list()[0]);
+    expect(restored.bytes).toEqual(denseFile);
+  }, 300_000);
+
   it('letter paper + balanced preset also survive the printer', async () => {
     const preset2 = presetById('balanced');
     const smallFile = randomBytes(rand, 18 * 1024);

@@ -40,8 +40,16 @@ file -> SHA-256 -> DEFLATE -> [AES-256-GCM] -> split into k chunks
 
 - **Restore is grandma-grade.** Open the site, tap Restore, point the camera
   at every page. Any order, duplicates fine, progress beeps. When enough codes
-  are in, the file downloads with its checksum verified. Photos and flatbed
-  scans of the pages work too.
+  are in, the file downloads with its checksum verified. Photos, flatbed
+  scans and PDFs (a scanner's PDF output, or the generated backup PDF itself)
+  all import too.
+- **Bulky files can be shrunk first.** An optional lossy pass on the Backup
+  tab, with per-type settings behind a gear icon: images are downscaled and
+  re-encoded (JPEG or WebP, pick the longest side and quality), PDFs are
+  rasterised page by page at a chosen DPI. The backup then stores the smaller
+  copy and clearly says so; if the result is not smaller, the original is
+  kept. Video, audio and archives are already compressed, and the panel says
+  that honestly instead of pretending.
 - **Backups survive damage.** The redundancy slider (default 25%) adds parity
   codes via Reed-Solomon erasure coding over GF(256). Lose any codes up to
   the parity budget (tears, stains, a whole missing page) and the file still

@@ -64,8 +64,33 @@
             <button type="button" id="change-file" class="ghost">change file</button>
           </div>
           <p id="file-size" class="muted"></p>
-          <p class="mono-label">SHA-256 fingerprint</p>
-          <p id="file-hash" class="fingerprint" aria-label="SHA-256 fingerprint of the selected file"></p>
+          <p id="file-hash-label" class="mono-label">SHA-256 fingerprint</p>
+          <p id="file-hash" class="fingerprint" aria-label="SHA-256 fingerprint of the file that will be backed up"></p>
+
+          <div class="shrink-row">
+            <label class="toggle-label" for="shrink-toggle">
+              <input type="checkbox" id="shrink-toggle" />
+              <span>Shrink file first <span class="legend-soft">(lossy, saves paper)</span></span>
+            </label>
+            <button
+              type="button"
+              id="shrink-gear"
+              class="icon-btn"
+              aria-expanded="false"
+              aria-controls="shrink-settings"
+              aria-label="Shrink settings"
+            >
+              <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M10.4 2h3.2l.5 2.5c.6.2 1.2.5 1.7.8l2.4-.9 1.6 2.8-1.9 1.7c.1.4.1.7.1 1.1s0 .7-.1 1.1l1.9 1.7-1.6 2.8-2.4-.9c-.5.3-1.1.6-1.7.8l-.5 2.5h-3.2l-.5-2.5a7.4 7.4 0 0 1-1.7-.8l-2.4.9-1.6-2.8 1.9-1.7c-.1-.4-.1-.7-.1-1.1s0-.7.1-1.1L4.2 7.2l1.6-2.8 2.4.9c.5-.3 1.1-.6 1.7-.8L10.4 2zm1.6 6.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"
+                />
+              </svg>
+              <span>settings</span>
+            </button>
+          </div>
+          <div id="shrink-settings" class="shrink-settings" hidden></div>
+          <p id="shrink-status" class="muted" aria-live="polite"></p>
         </section>
 
         <form id="backup-options" hidden>
@@ -138,13 +163,13 @@
       <section id="panel-restore" role="tabpanel" aria-labelledby="tab-restore" tabindex="0" hidden>
         <div class="restore-actions">
           <button type="button" id="camera-btn" class="primary big">Scan with camera</button>
-          <button type="button" id="import-btn" class="big">Import photos / scans</button>
+          <button type="button" id="import-btn" class="big">Import photos / scans / PDF</button>
           <input
             id="import-input"
             class="visually-hidden"
             type="file"
             multiple
-            accept="image/*"
+            accept="image/*,application/pdf,.pdf"
             aria-hidden="true"
             tabindex="-1"
           />
@@ -160,8 +185,8 @@
         </div>
 
         <div id="restore-drop" class="dropzone dropzone--slim" tabindex="0" role="button"
-          aria-label="Drop page photos here to import them">
-          or drop page photos / scans anywhere here
+          aria-label="Drop page photos, scans or the backup PDF here to import them">
+          or drop page photos, scans or the backup PDF here
         </div>
 
         <p id="import-progress" class="muted" role="status" hidden></p>
