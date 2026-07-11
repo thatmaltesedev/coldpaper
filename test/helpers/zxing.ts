@@ -32,6 +32,20 @@ export async function decodeBitmap(bitmap: GrayBitmap, maxSymbols = 24): Promise
   return results.filter((r) => r.isValid).map((r) => r.bytes);
 }
 
+/** Decode straight from RGBA pixels (e.g. a pdf.js-rendered page). */
+export async function decodeRgba(
+  image: { data: Uint8ClampedArray; width: number; height: number },
+  maxSymbols = 24,
+): Promise<Uint8Array[]> {
+  init();
+  const results = await readBarcodes(image as unknown as ImageData, {
+    formats: ['QRCode'],
+    tryHarder: true,
+    maxNumberOfSymbols: maxSymbols,
+  });
+  return results.filter((r) => r.isValid).map((r) => r.bytes);
+}
+
 /** Decode from encoded image file bytes (exercises PNG parsing inside zxing). */
 export async function decodeImageFile(fileBytes: Uint8Array, maxSymbols = 24): Promise<Uint8Array[]> {
   init();
