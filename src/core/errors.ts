@@ -16,6 +16,8 @@ export type CpErrorCode =
   | 'BAD_PASSPHRASE'
   /** The restored bytes do not hash to the fingerprint stored in the backup. */
   | 'HASH_MISMATCH'
+  /** Reconstructed payload is structurally broken (bad envelope, failed inflate). */
+  | 'CORRUPT_PAYLOAD'
   /** Input exceeds what the format (or the app's hard cap) can hold. */
   | 'FILE_TOO_LARGE'
   /** A bug: an invariant the code relies on was violated. */
