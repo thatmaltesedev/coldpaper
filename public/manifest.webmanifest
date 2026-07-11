@@ -1,0 +1,15 @@
+{
+  "name": "Coldpaper",
+  "short_name": "Coldpaper",
+  "description": "Back up any file onto printable paper. Encrypt, print as QR codes, restore by pointing your phone camera at the pages.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf9f6",
+  "theme_color": "#faf9f6",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
