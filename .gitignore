@@ -2,5 +2,6 @@ node_modules/
 dist/
 dist-offline/
 *.local
+.claude/
 .DS_Store
 Thumbs.db

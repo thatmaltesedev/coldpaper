@@ -15,7 +15,179 @@
     <meta name="theme-color" content="#161513" media="(prefers-color-scheme: dark)" />
   </head>
   <body>
-    <div id="app"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="masthead">
+      <div class="brand">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 24 24" width="28" height="28">
+          <rect x="1" y="1" width="10" height="10" />
+          <rect x="4" y="4" width="4" height="4" class="brand-hole" />
+          <rect x="13" y="1" width="4" height="4" />
+          <rect x="19" y="1" width="4" height="4" />
+          <rect x="13" y="7" width="4" height="4" />
+          <rect x="1" y="13" width="4" height="4" />
+          <rect x="7" y="13" width="4" height="4" />
+          <rect x="1" y="19" width="4" height="4" />
+          <rect x="13" y="13" width="10" height="10" />
+          <rect x="16" y="16" width="4" height="4" class="brand-hole" />
+        </svg>
+        <span class="brand-name">coldpaper</span>
+        <span class="brand-format">format v1</span>
+      </div>
+      <p class="tagline">
+        Back any file up onto printable paper — and get it back with a phone camera.
+        Everything happens in this browser tab. Nothing is uploaded, ever.
+      </p>
+      <nav class="tabs" role="tablist" aria-label="Mode">
+        <button type="button" role="tab" id="tab-backup" aria-controls="panel-backup" aria-selected="true">
+          Backup
+        </button>
+        <button type="button" role="tab" id="tab-restore" aria-controls="panel-restore" aria-selected="false">
+          Restore
+        </button>
+      </nav>
+    </header>
+
+    <main id="main">
+      <!-- ============================== BACKUP ============================== -->
+      <section id="panel-backup" role="tabpanel" aria-labelledby="tab-backup" tabindex="0">
+        <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose a file to back up">
+          <input id="file-input" class="visually-hidden" type="file" aria-hidden="true" tabindex="-1" />
+          <strong>Drop a file here</strong>
+          <span>or <span class="linkish">browse for one</span></span>
+          <small>Up to 5&nbsp;MB — paper backups shine under 500&nbsp;KB.</small>
+        </div>
+
+        <section id="file-card" class="card" hidden aria-label="Selected file">
+          <div class="file-line">
+            <span id="file-name" class="file-name"></span>
+            <button type="button" id="change-file" class="ghost">change file</button>
+          </div>
+          <p id="file-size" class="muted"></p>
+          <p class="mono-label">SHA-256 fingerprint</p>
+          <p id="file-hash" class="fingerprint" aria-label="SHA-256 fingerprint of the selected file"></p>
+        </section>
+
+        <form id="backup-options" hidden>
+          <fieldset>
+            <legend>Density</legend>
+            <div id="density-group" class="choice-grid" role="radiogroup" aria-label="Density preset"></div>
+          </fieldset>
+
+          <div class="options-row">
+            <fieldset>
+              <legend>Paper</legend>
+              <div class="choice-row">
+                <label class="choice-pill"><input type="radio" name="paper" value="a4" checked /> A4</label>
+                <label class="choice-pill"><input type="radio" name="paper" value="letter" /> Letter</label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Redundancy</legend>
+              <label class="visually-hidden" for="redundancy">Parity percentage</label>
+              <input type="range" id="redundancy" min="10" max="50" step="5" value="25" />
+              <p id="redundancy-note" class="muted" aria-live="polite"></p>
+            </fieldset>
+          </div>
+
+          <fieldset>
+            <legend>Passphrase <span class="legend-soft">(optional — leave empty for none)</span></legend>
+            <div class="options-row">
+              <label class="stack">Passphrase
+                <input type="password" id="passphrase" autocomplete="new-password" spellcheck="false" />
+              </label>
+              <label class="stack">Confirm
+                <input type="password" id="passphrase-confirm" autocomplete="new-password" spellcheck="false" />
+              </label>
+            </div>
+            <p class="warn-text">
+              There is no password reset. Lose this passphrase and the backup is unreadable. Forever.
+            </p>
+            <p id="passphrase-error" class="error-text" role="alert" hidden>Passphrases don’t match.</p>
+          </fieldset>
+
+          <p id="backup-summary" class="summary" aria-live="polite"></p>
+          <p id="size-warning" class="warn-text" hidden></p>
+
+          <button type="submit" id="generate-btn" class="primary big">Generate pages</button>
+        </form>
+
+        <div id="backup-progress" class="progress-line" role="status" hidden>
+          <span id="backup-progress-label"></span>
+          <progress id="backup-progress-bar" max="100" value="0"></progress>
+        </div>
+
+        <section id="backup-result" hidden aria-label="Generated backup">
+          <h2>Ready to print</h2>
+          <p id="backup-result-line"></p>
+          <div class="actions">
+            <button type="button" id="download-pdf" class="primary big">Download PDF</button>
+            <button type="button" id="print-pdf" class="big">Print…</button>
+            <button type="button" id="start-over" class="ghost">start over</button>
+          </div>
+          <div id="preview-strip" class="previews" aria-label="Page previews"></div>
+          <p class="hint">
+            Print at 100% scale (“actual size”). Plain black &amp; white is fine — laser toner outlives
+            inkjet if the paper ever gets wet. Keep the cover sheet: it explains how to restore.
+          </p>
+        </section>
+      </section>
+
+      <!-- ============================== RESTORE ============================== -->
+      <section id="panel-restore" role="tabpanel" aria-labelledby="tab-restore" tabindex="0" hidden>
+        <div class="restore-actions">
+          <button type="button" id="camera-btn" class="primary big">Scan with camera</button>
+          <button type="button" id="import-btn" class="big">Import photos / scans</button>
+          <input
+            id="import-input"
+            class="visually-hidden"
+            type="file"
+            multiple
+            accept="image/*"
+            aria-hidden="true"
+            tabindex="-1"
+          />
+        </div>
+
+        <div id="camera-wrap" class="camera-wrap" hidden>
+          <video id="camera-video" muted playsinline></video>
+          <p id="camera-hint" class="muted">Point at each page — any order. Codes beep as they land.</p>
+          <div class="actions">
+            <button type="button" id="torch-btn" hidden>Torch</button>
+            <button type="button" id="stop-camera">Stop camera</button>
+          </div>
+        </div>
+
+        <div id="restore-drop" class="dropzone dropzone--slim" tabindex="0" role="button"
+          aria-label="Drop page photos here to import them">
+          …or drop page photos / scans anywhere here
+        </div>
+
+        <p id="import-progress" class="muted" role="status" hidden></p>
+        <p id="scan-note" class="muted" role="status" aria-live="polite"></p>
+
+        <section id="restore-status" aria-live="polite" aria-label="Scan progress"></section>
+        <section id="restore-result" aria-label="Restored file"></section>
+      </section>
+    </main>
+
+    <footer>
+      <p class="privacy">
+        <strong>100% local.</strong> Your file never leaves this device — verify it yourself: open
+        DevTools → Network and watch: zero requests while backing up or restoring.
+      </p>
+      <p id="offline-line">
+        <a id="offline-link" href="./coldpaper-offline.html" download>Download the single-file offline copy</a>
+        — save it on a USB stick and keep it with your printed backup.
+      </p>
+      <p>
+        <a href="https://github.com/thatmaltesedev/coldpaper" rel="noopener">Source &amp; format spec</a>
+        <span aria-hidden="true">·</span> MIT
+        <span aria-hidden="true">·</span> <span id="app-version"></span>
+      </p>
+    </footer>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
