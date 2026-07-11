@@ -39,10 +39,11 @@ file -> SHA-256 -> DEFLATE -> [AES-256-GCM] -> split into k chunks
 ```
 
 - **Restore is grandma-grade.** Open the site, tap Restore, point the camera
-  at every page. Any order, duplicates fine, progress beeps. When enough codes
-  are in, the file downloads with its checksum verified. Photos, flatbed
-  scans and PDFs (a scanner's PDF output, or the generated backup PDF itself)
-  all import too.
+  at every page. Any order, duplicates fine; captured codes count up live,
+  with optional per-code camera beeps (sound is off by default, one tap turns
+  it on). When enough codes are in, the file downloads with its checksum
+  verified. Photos, flatbed scans and PDFs (a scanner's PDF output, or the
+  generated backup PDF itself) all import too.
 - **Bulky files can be shrunk first.** An optional lossy pass on the Backup
   tab, with per-type settings behind a gear icon: images are downscaled and
   re-encoded (JPEG or WebP, pick the longest side and quality), PDFs are

@@ -634,6 +634,23 @@ progress {
   }
 }
 
+.restore-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0.2rem 0 1rem;
+}
+
+.tools-hint {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+#sound-toggle[aria-pressed='true'] {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 .camera-wrap {
   margin: 1rem 0;
 }

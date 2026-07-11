@@ -175,9 +175,22 @@
           />
         </div>
 
+        <div class="restore-tools">
+          <button type="button" id="sound-toggle" class="icon-btn" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M3 9v6h4l6 5V4L7 9H3zm13.5 3a3.5 3.5 0 0 0-2-3.2v6.4a3.5 3.5 0 0 0 2-3.2zm-2-7.6v2.1a5.6 5.6 0 0 1 0 11v2.1a7.7 7.7 0 0 0 0-15.2z"
+              />
+            </svg>
+            <span id="sound-toggle-label">sound: off</span>
+          </button>
+          <span class="muted tools-hint">Captured codes tick up below; turn sound on for camera beeps.</span>
+        </div>
+
         <div id="camera-wrap" class="camera-wrap" hidden>
           <video id="camera-video" muted playsinline></video>
-          <p id="camera-hint" class="muted">Point at each page, in any order. Codes beep as they land.</p>
+          <p id="camera-hint" class="muted">Point at each page, in any order.</p>
           <div class="actions">
             <button type="button" id="torch-btn" hidden>Torch</button>
             <button type="button" id="stop-camera">Stop camera</button>

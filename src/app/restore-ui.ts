@@ -2,7 +2,7 @@
 import { ChunkCollector, type CollectedBackup } from '../core/collector';
 import { isCpError } from '../core/errors';
 import { restoreBackup, type RestoredFile } from '../core/pipeline';
-import { scanFeedback } from '../scan/beep';
+import { isScanSoundEnabled, scanFeedback, setScanSound } from '../scan/beep';
 import { startCamera, type CameraSession } from '../scan/camera';
 import { QrDecoder } from '../scan/decode';
 import { renderPdfPages } from '../scan/pdf-import';
@@ -50,19 +50,32 @@ export function initRestoreUi(): void {
     return decoder;
   }
 
-  function handleDecoded(payloads: Uint8Array[]): void {
+  // Sound is muted by default; batch imports never give per-code feedback
+  // even when sound is on (a 50-code PDF must not beep 50 times). The live
+  // camera is where per-code feedback earns its keep.
+  const soundToggle = $<HTMLButtonElement>('#sound-toggle');
+  soundToggle.addEventListener('click', () => {
+    const on = !isScanSoundEnabled();
+    setScanSound(on);
+    soundToggle.setAttribute('aria-pressed', String(on));
+    $('#sound-toggle-label').textContent = on ? 'sound: on' : 'sound: off';
+  });
+
+  function handleDecoded(payloads: Uint8Array[], source: 'camera' | 'import'): void {
     let progressed = false;
     for (const bytes of payloads) {
       const outcome = collector.add(bytes);
       switch (outcome.kind) {
         case 'added':
           progressed = true;
-          scanFeedback('added');
-          video.classList.add('flash');
-          setTimeout(() => video.classList.remove('flash'), 220);
+          if (source === 'camera') {
+            scanFeedback('added');
+            video.classList.add('flash');
+            setTimeout(() => video.classList.remove('flash'), 220);
+          }
           break;
         case 'duplicate':
-          scanFeedback('duplicate');
+          if (source === 'camera') scanFeedback('duplicate');
           break;
         case 'invalid':
           if (outcome.error.code === 'BAD_CHECKSUM') {
@@ -102,7 +115,7 @@ export function initRestoreUi(): void {
     try {
       const qr = await ensureDecoder();
       camera = await startCamera(video, async (imageData, canvas) => {
-        handleDecoded(await qr.decode(imageData, canvas));
+        handleDecoded(await qr.decode(imageData, canvas), 'camera');
       });
       cameraWrap.hidden = false;
       torchBtn.hidden = !camera.torchAvailable;
@@ -166,7 +179,7 @@ export function initRestoreUi(): void {
         const imageData = await imageDataFromFile(file);
         const payloads = await qr.decode(imageData);
         found += payloads.length;
-        handleDecoded(payloads);
+        handleDecoded(payloads, 'import');
       } catch {
         note(`Couldn't read "${file.name}" as an image.`);
       }
@@ -191,7 +204,7 @@ export function initRestoreUi(): void {
         const imageData = page.context.getImageData(0, 0, page.canvas.width, page.canvas.height);
         const payloads = await qr.decode(imageData);
         found += payloads.length;
-        handleDecoded(payloads);
+        handleDecoded(payloads, 'import');
       }
     } catch {
       note(`Couldn't read "${file.name}" as a PDF.`);
