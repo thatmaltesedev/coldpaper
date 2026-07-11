@@ -10,7 +10,7 @@
  *
  * Guarantees (documented in FORMAT.md §7):
  *  - loss of ANY m codes is always recoverable;
- *  - loss of up to m×G codes is recoverable when no group loses more than m,
+ *  - loss of up to m*G codes is recoverable when no group loses more than m,
  *    which round-robin makes the norm for contiguous damage;
  *  - for backups small enough to fit one group (G = 1, files up to ~130 KB at
  *    the default density) the promise is exact: any m of the k+m codes.

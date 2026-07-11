@@ -76,7 +76,7 @@ export class CollectedBackup {
         backupId: this.backupIdHex,
         error: new CpError(
           'CHUNK_MISMATCH',
-          `chunk ${header.chunkIndex + 1} disagrees with the other chunks of backup ${this.backupIdHex} — probably a mis-scan`,
+          `chunk ${header.chunkIndex + 1} disagrees with the other chunks of backup ${this.backupIdHex}, probably a mis-scan`,
           { header },
         ),
       };
@@ -96,7 +96,7 @@ export class CollectedBackup {
       const missingCandidates: number[] = [];
       for (let s = 0; s < p.slotsPerGroup; s++) {
         const idx = dataChunkIndex(g, s, p);
-        if (idx >= p.dataChunkCount) have++; // virtual zero slot — always known
+        if (idx >= p.dataChunkCount) have++; // virtual zero slot - always known
         else if (this.chunkData.has(idx)) have++;
         else missingCandidates.push(idx);
       }

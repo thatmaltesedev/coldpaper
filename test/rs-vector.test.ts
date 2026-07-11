@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { cauchyRow, decodeGroup, encodeParity } from '../src/core/rs';
 
 /**
- * The frozen worked example from FORMAT.md §7.4 — computed with an independent
+ * The frozen worked example from FORMAT.md §7.4 - computed with an independent
  * GF(256) implementation. If this test fails, either the coder or the spec
  * drifted, and whichever moved is wrong.
  */

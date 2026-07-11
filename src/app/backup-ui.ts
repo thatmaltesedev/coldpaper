@@ -98,7 +98,7 @@ export function initBackupUi(): void {
   async function onFile(file: File): Promise<void> {
     errorLine.hidden = true;
     if (file.size > HARD_FILE_CAP) {
-      errorLine.textContent = `“${file.name}” is ${fmtBytes(file.size)} — the hard cap is 5 MB. Paper has limits; zip only the irreplaceable part.`;
+      errorLine.textContent = `"${file.name}" is ${fmtBytes(file.size)}. The hard cap is 5 MB; paper has limits, so zip only the irreplaceable part.`;
       errorLine.hidden = false;
       return;
     }
@@ -114,7 +114,7 @@ export function initBackupUi(): void {
     fileCard.hidden = false;
     optionsForm.hidden = false;
     resultSection.hidden = true;
-    summary.textContent = 'Sizing up the file…';
+    summary.textContent = 'Sizing up the file...';
 
     // Estimate compressed size off the click path so the card paints first.
     setTimeout(() => {
@@ -174,14 +174,14 @@ export function initBackupUi(): void {
           ? `lose any ${parityTotal} code${parityTotal === 1 ? '' : 's'} and still restore`
           : `tolerates ${plan.parityPerGroup} lost codes per group (${parityTotal} when damage is spread out)`;
       summary.textContent = `${plan.totalChunks} codes · ${pages + 1} pages including the cover · ${tolerance}`;
-      redundancyNote.textContent = `${redundancy}% — ${parityTotal} parity code${parityTotal === 1 ? '' : 's'}`;
+      redundancyNote.textContent = `${redundancy}%: ${parityTotal} parity code${parityTotal === 1 ? '' : 's'}`;
       const softWarn = selected.bytes.length > SOFT_FILE_WARNING;
       sizeWarning.hidden = !softWarn;
       if (softWarn) {
-        sizeWarning.textContent = `Heads up: ${fmtBytes(selected.bytes.length)} means about ${pages} code pages. Paper backups work best under 500 KB — consider backing up only the irreplaceable core.`;
+        sizeWarning.textContent = `Heads up: ${fmtBytes(selected.bytes.length)} means about ${pages} code pages. Paper backups work best under 500 KB; consider backing up only the irreplaceable core.`;
       }
     } catch (e) {
-      summary.textContent = isCpError(e) ? e.message : 'This combination does not fit — try a denser preset.';
+      summary.textContent = isCpError(e) ? e.message : 'This combination does not fit; try a denser preset.';
     }
   }
 
@@ -211,7 +211,7 @@ export function initBackupUi(): void {
       const paper = currentPaper();
       const redundancy = Number(redundancyInput.value);
 
-      progressLabel.textContent = 'Computing parity…';
+      progressLabel.textContent = 'Computing parity...';
       progressBar.removeAttribute('value');
       const backup = await createBackup({
         fileName: selected.name,
@@ -220,13 +220,13 @@ export function initBackupUi(): void {
         redundancyPercent: redundancy,
         passphrase: passphrase.value || undefined,
         onProgress: (done, total) => {
-          progressLabel.textContent = `Computing parity… group ${done} of ${total}`;
+          progressLabel.textContent = `Computing parity... group ${done} of ${total}`;
           progressBar.max = total;
           progressBar.value = done;
         },
       });
 
-      progressLabel.textContent = 'Rendering codes…';
+      progressLabel.textContent = 'Rendering codes...';
       const pdf = await buildPdf({
         backup,
         fileName: selected.name,
@@ -237,7 +237,7 @@ export function initBackupUi(): void {
         createdOn: todayIso(),
         appUrl: APP_URL,
         onProgress: (done, total) => {
-          progressLabel.textContent = `Rendering codes… ${done} of ${total}`;
+          progressLabel.textContent = `Rendering codes... ${done} of ${total}`;
           progressBar.max = total;
           progressBar.value = done;
         },

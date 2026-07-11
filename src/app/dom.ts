@@ -1,4 +1,4 @@
-/** Tiny DOM helpers — the whole app is hand-wired vanilla DOM. */
+/** Tiny DOM helpers - the whole app is hand-wired vanilla DOM. */
 
 export function $<T extends HTMLElement>(selector: string, root: ParentNode = document): T {
   const node = root.querySelector(selector);

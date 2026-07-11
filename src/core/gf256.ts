@@ -1,6 +1,6 @@
 /**
  * Arithmetic over GF(2^8) with the reducing polynomial x^8+x^4+x^3+x^2+1 (0x11d)
- * and generator element 2 — the same field QR codes themselves use.
+ * and generator element 2 - the same field QR codes themselves use.
  *
  * Addition and subtraction are both XOR. Multiplication and division go through
  * exp/log tables. EXP is doubled in length so `EXP[LOG[a] + LOG[b]]` never needs

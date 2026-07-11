@@ -1,14 +1,14 @@
 /**
  * Print-and-scan damage simulation on grayscale bitmaps: rotation (skewed
  * paper), scaling (distance/resolution), gaussian noise (sensor + paper
- * texture) and blur (focus, ink bleed). Pure TS — no canvas needed.
+ * texture) and blur (focus, ink bleed). Pure TS - no canvas needed.
  */
 import type { GrayBitmap } from '../../src/qr/raster';
 import type { Rand } from './rng';
 
 /**
  * Rotate around the centre by `degrees`, bilinear sampling, white background.
- * The canvas expands so nothing is clipped — like a photo of a skewed page.
+ * The canvas expands so nothing is clipped - like a photo of a skewed page.
  */
 export function rotate(img: GrayBitmap, degrees: number): GrayBitmap {
   const rad = (degrees * Math.PI) / 180;
@@ -60,7 +60,7 @@ function sampleBilinear(data: Uint8Array, width: number, height: number, x: numb
   return Math.round(top * (1 - fy) + bottom * fy);
 }
 
-/** Add gaussian noise with standard deviation `sigma` (Box–Muller, seeded). */
+/** Add gaussian noise with standard deviation `sigma` (Box-Muller, seeded). */
 export function addNoise(img: GrayBitmap, sigma: number, rand: Rand): GrayBitmap {
   const out = new Uint8Array(img.data.length);
   for (let i = 0; i < out.length; i += 2) {

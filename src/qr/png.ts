@@ -1,5 +1,5 @@
 /**
- * Minimal 8-bit grayscale PNG encoder (color type 0, filter 0) — enough for
+ * Minimal 8-bit grayscale PNG encoder (color type 0, filter 0) - enough for
  * QR bitmaps, tiny, and shared verbatim between the app (PDF embedding) and
  * the tests (what we test is what prints). Compression via fflate's zlib.
  */
@@ -25,7 +25,7 @@ export function encodeGrayPng(bitmap: GrayBitmap): Uint8Array {
   writeU32BE(ihdr, 4, height);
   ihdr[8] = 8; // bit depth
   ihdr[9] = 0; // color type: grayscale
-  // compression 0, filter 0, interlace 0 — already zeroed
+  // compression 0, filter 0, interlace 0 - already zeroed
 
   // Every scanline prefixed with filter byte 0 (None).
   const raw = new Uint8Array((width + 1) * height);

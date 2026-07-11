@@ -7,7 +7,7 @@
  *     C[t][j] = 1 / ((k + t) XOR j)      t in [0, m), j in [0, k)
  *
  * Because every square submatrix of a Cauchy matrix is invertible, ANY k of the
- * k+m slots suffice to reconstruct all data slots — the property the whole
+ * k+m slots suffice to reconstruct all data slots - the property the whole
  * "tear a page off and restore anyway" promise rests on.
  */
 import { CpError } from './errors';
@@ -49,7 +49,7 @@ export function encodeParity(
   return parity;
 }
 
-/** Gauss-Jordan inversion of an n×n matrix over GF(256) (with partial pivoting). */
+/** Gauss-Jordan inversion of an n by n matrix over GF(256) (with partial pivoting). */
 export function gfInvertMatrix(matrix: Uint8Array[], n: number): Uint8Array[] {
   const a = matrix.map((r) => Uint8Array.from(r));
   const inv: Uint8Array[] = [];
@@ -129,7 +129,7 @@ export function decodeGroup(input: GroupDecodeInput): Uint8Array[] {
     );
   }
 
-  // Use the first e captured parity rows (any e work — every submatrix is invertible).
+  // Use the first e captured parity rows (any e work - every submatrix is invertible).
   const e = missing.length;
   const rows = [...parityPresent.keys()].sort((x, y) => x - y).slice(0, e);
 

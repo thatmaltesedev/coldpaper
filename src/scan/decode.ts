@@ -1,6 +1,6 @@
 /**
  * Unified QR decoding. The native BarcodeDetector API is consulted first when
- * the platform has it (fast, hardware-assisted on many phones) — but browsers
+ * the platform has it (fast, hardware-assisted on many phones) - but browsers
  * only hand back a STRING, which can silently mangle binary payloads. So a
  * native result only counts if it reconstructs to a chunk that passes the
  * format's CRC-32, and the bundled zxing-wasm decoder ALWAYS runs as well:
@@ -85,7 +85,7 @@ export class QrDecoder {
   }
 
   /**
-   * Decode all QR codes in one frame — union of both decoders, de-duplicated.
+   * Decode all QR codes in one frame - union of both decoders, de-duplicated.
    * Foreign (non-Coldpaper) codes are still returned via zxing so the UI can
    * tell the user what it saw.
    */
@@ -107,7 +107,7 @@ export class QrDecoder {
           if (bytes) add(bytes);
         }
       } catch {
-        this.native = null; // flaky platform implementation — zxing carries on alone
+        this.native = null; // flaky platform implementation - zxing carries on alone
       }
     }
 

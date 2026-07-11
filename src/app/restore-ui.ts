@@ -61,15 +61,15 @@ export function initRestoreUi(): void {
           break;
         case 'invalid':
           if (outcome.error.code === 'BAD_CHECKSUM') {
-            note('A code scanned fuzzy — hold steady or move closer.');
+            note('A code scanned fuzzy. Hold steady or move closer.');
           } else if (outcome.error.code === 'UNSUPPORTED_VERSION') {
-            note('That code is from a NEWER Coldpaper format — update this app to restore it.');
+            note('That code is from a NEWER Coldpaper format. Update this app to restore it.');
           } else {
             note('Ignored a QR code that is not part of a Coldpaper backup.');
           }
           break;
         case 'mismatch':
-          note('One code disagreed with the rest of its backup (mis-scan) — ignored.');
+          note('One code disagreed with the rest of its backup (mis-scan) and was ignored.');
           break;
       }
     }
@@ -149,20 +149,20 @@ export function initRestoreUi(): void {
     importProgress.hidden = false;
     let found = 0;
     for (let i = 0; i < files.length; i++) {
-      importProgress.textContent = `Reading image ${i + 1} of ${files.length}…`;
+      importProgress.textContent = `Reading image ${i + 1} of ${files.length}...`;
       try {
         const imageData = await imageDataFromFile(files[i]);
         const payloads = await qr.decode(imageData);
         found += payloads.length;
         handleDecoded(payloads);
       } catch {
-        note(`Couldn’t read “${files[i].name}” as an image.`);
+        note(`Couldn't read "${files[i].name}" as an image.`);
       }
     }
     importProgress.textContent =
       found === 0
         ? 'No QR codes found in those images. Make sure each code is sharp, flat and well-lit.'
-        : `Done — found ${found} code${found === 1 ? '' : 's'} in ${files.length} image${files.length === 1 ? '' : 's'}.`;
+        : `Done: found ${found} code${found === 1 ? '' : 's'} in ${files.length} image${files.length === 1 ? '' : 's'}.`;
     renderStatus();
   }
 
@@ -193,7 +193,7 @@ export function initRestoreUi(): void {
       statusSection.append(
         el('p', {
           class: 'multi-note',
-          text: `Codes from ${backups.length} different backups detected — they are kept separate. Keep scanning; restore each below.`,
+          text: `Codes from ${backups.length} different backups detected. They are kept separate; keep scanning and restore each below.`,
         }),
       );
     }
@@ -216,14 +216,14 @@ export function initRestoreUi(): void {
           { class: 'scan-card-head' },
           el('span', { class: 'mono', text: `backup ${backup.backupIdHex.toUpperCase()}` }),
           backup.encrypted ? el('span', { class: 'badge', text: 'encrypted' }) : '',
-          complete ? el('span', { class: 'badge ok', text: isRestored ? 'restored ✓' : 'complete ✓' }) : '',
+          complete ? el('span', { class: 'badge ok', text: isRestored ? 'restored' : 'complete' }) : '',
         ),
         meter,
         el('p', {
           class: 'scan-count',
           text: complete
-            ? `${captured} of ${total} codes captured — enough to restore.`
-            : `${captured} of ${total} codes captured — need any ${required}.`,
+            ? `${captured} of ${total} codes captured: enough to restore.`
+            : `${captured} of ${total} codes captured (need any ${required}).`,
         }),
       );
 
@@ -313,7 +313,7 @@ export function initRestoreUi(): void {
       el('h2', { text: 'Passphrase needed' }),
       el('p', {
         class: 'muted',
-        text: `Backup ${backup.backupIdHex.toUpperCase()} is encrypted. All codes are captured — enter the passphrase to unlock it.`,
+        text: `Backup ${backup.backupIdHex.toUpperCase()} is encrypted. All codes are captured; enter the passphrase to unlock it.`,
       }),
       el('label', { class: 'stack', for: 'restore-passphrase', text: 'Passphrase ' }, input),
       error ? el('p', { class: 'error-text', role: 'alert', text: error }) : '',
@@ -323,7 +323,7 @@ export function initRestoreUi(): void {
       event.preventDefault();
       if (!input.value) return;
       passphrases.set(backup.backupIdHex, input.value);
-      resultSection.innerHTML = '<p class="muted" role="status">Deriving key (600,000 rounds) and decrypting…</p>';
+      resultSection.innerHTML = '<p class="muted" role="status">Deriving key (600,000 rounds) and decrypting...</p>';
       void maybeRestore(backup, true);
     });
     resultSection.append(form);
@@ -340,7 +340,7 @@ export function initRestoreUi(): void {
         el('p', { text: message }),
         el('p', {
           class: 'muted',
-          text: `Backup ${backup.backupIdHex.toUpperCase()} — rescan any doubtful pages; duplicates are always safe.`,
+          text: `Backup ${backup.backupIdHex.toUpperCase()}: rescan any doubtful pages; duplicates are always safe.`,
         }),
       ),
     );
@@ -364,7 +364,7 @@ export function initRestoreUi(): void {
           class: 'muted',
           text: `${fmtBytes(file.bytes.length)}${file.wasEncrypted ? ' · decrypted' : ''}${file.wasCompressed ? ' · decompressed' : ''} · backup ${backup.backupIdHex.toUpperCase()}`,
         }),
-        el('p', { class: 'verified', text: '✓ SHA-256 checksum verified — byte-for-byte identical to the original.' }),
+        el('p', { class: 'verified', text: 'SHA-256 checksum verified: byte-for-byte identical to the original.' }),
         el('p', { class: 'fingerprint', text: fmtHexGroups(file.sha256) }),
         download,
       ),

@@ -1,5 +1,5 @@
 // Generates the PWA icons from the same QR-corner motif as favicon.svg.
-// Run once (npm run icons) and commit the PNGs — they are build inputs.
+// Run once (npm run icons) and commit the PNGs - they are build inputs.
 import { createCanvas } from '@napi-rs/canvas';
 import { mkdirSync, writeFileSync } from 'node:fs';
 

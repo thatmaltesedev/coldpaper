@@ -1,6 +1,6 @@
 /**
  * Raw DEFLATE (RFC 1951) via fflate. Compression is only kept when it actually
- * shrinks the payload — already-compressed inputs (zips, jpegs, random keys)
+ * shrinks the payload - already-compressed inputs (zips, jpegs, random keys)
  * are stored verbatim so they never pay for a wrapper.
  */
 import { deflateSync, inflateSync } from 'fflate';
@@ -20,7 +20,7 @@ export function decompress(data: Uint8Array, expectedSize?: number): Uint8Array 
   } catch {
     throw new CpError(
       'CORRUPT_PAYLOAD',
-      'the reconstructed payload failed to decompress — rescan the pages and try again',
+      'the reconstructed payload failed to decompress; rescan the pages and try again',
     );
   }
 }

@@ -106,7 +106,7 @@ describe('chunk codec', () => {
 describe('metadata block', () => {
   it('round-trips names, size and hash', () => {
     const meta = {
-      name: 'seed-phrase — final(2).txt',
+      name: 'seed-phrase - final(2).txt',
       fileSize: 123_456,
       sha256: randomBytes(rand, 32),
     };

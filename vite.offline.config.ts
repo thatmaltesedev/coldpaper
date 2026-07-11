@@ -4,7 +4,7 @@ import pkg from './package.json';
 
 // Offline build: everything (JS, CSS, the zxing wasm binary) inlined into ONE
 // self-contained HTML file. The main build copies it into dist/ as
-// `coldpaper-offline.html` — the "keep it on a USB stick" artifact.
+// `coldpaper-offline.html` - the "keep it on a USB stick" artifact.
 export default defineConfig({
   base: './',
   define: {

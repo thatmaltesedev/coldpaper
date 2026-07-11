@@ -1,5 +1,5 @@
 /**
- * The Coldpaper v1 chunk format — the exact bytes that go inside each QR code.
+ * The Coldpaper v1 chunk format - the exact bytes that go inside each QR code.
  * FORMAT.md is the normative spec; this file implements it.
  *
  * Every QR payload:
@@ -127,7 +127,7 @@ export function decodeChunk(payload: Uint8Array): DecodedChunk {
   };
   const data = payload.slice(CHUNK_OVERHEAD);
 
-  // Internal consistency — a valid CRC over an insane header still gets rejected.
+  // Internal consistency - a valid CRC over an insane header still gets rejected.
   const { payloadLength, dataChunkCount, groupCount, parityPerGroup } = header;
   const chunkSize = data.length;
   const bad = (why: string) => new CpError('NOT_COLDPAPER', `inconsistent chunk header: ${why}`, { header });
@@ -148,7 +148,7 @@ export function decodeChunk(payload: Uint8Array): DecodedChunk {
 }
 
 // ---------------------------------------------------------------------------
-// Metadata block — the first bytes of the (plaintext) payload.
+// Metadata block - the first bytes of the (plaintext) payload.
 //
 //   offset   size  field
 //   0        1     filename length n in bytes (may be 0)

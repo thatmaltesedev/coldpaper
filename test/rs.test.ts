@@ -32,7 +32,7 @@ describe('Reed-Solomon over GF(256)', () => {
     const rand = mulberry32(7);
     for (let trial = 0; trial < 20; trial++) {
       const n = 1 + randInt(rand, 12);
-      // Random Cauchy submatrix rows — always invertible.
+      // Random Cauchy submatrix rows - always invertible.
       const k = n + randInt(rand, 40);
       const rows = pickDistinct(rand, 40, n).map((t) => cauchyRow(k, t));
       const a = rows.map((r) => {

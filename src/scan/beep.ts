@@ -28,7 +28,7 @@ export function scanFeedback(kind: 'added' | 'duplicate' | 'complete'): void {
       tone(990, 110, 140);
       navigator.vibrate?.([70, 50, 120]);
     } else {
-      // Duplicates happen constantly while pointing at a page — keep them quiet and rare.
+      // Duplicates happen constantly while pointing at a page - keep them quiet and rare.
       const now = Date.now();
       if (now - lastDuplicate > 1500) {
         lastDuplicate = now;
@@ -36,6 +36,6 @@ export function scanFeedback(kind: 'added' | 'duplicate' | 'complete'): void {
       }
     }
   } catch {
-    // No audio? No problem — the progress meter still moves.
+    // No audio? No problem - the progress meter still moves.
   }
 }

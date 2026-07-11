@@ -17,7 +17,7 @@ export function copyOfflineBuild(): Plugin {
       if (existsSync(src)) {
         copyFileSync(src, dest);
       } else {
-        this.warn('dist-offline/index.html missing — run the offline build first (npm run build does both)');
+        this.warn('dist-offline/index.html missing - run the offline build first (npm run build does both)');
       }
     },
   };

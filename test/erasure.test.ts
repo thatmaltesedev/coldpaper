@@ -28,7 +28,7 @@ describe('erasure resilience', () => {
     const rand = mulberry32(2001);
     const backup = await makeBackup(rand, 60_000);
     const plan = backup.plan;
-    // Lose the LAST m data chunks of each group — parity must carry them.
+    // Lose the LAST m data chunks of each group - parity must carry them.
     const lost = new Set<number>();
     for (let g = 0; g < plan.groupCount; g++) {
       let inGroup = 0;
@@ -74,7 +74,7 @@ describe('erasure resilience', () => {
     }
   }, 240_000);
 
-  it('multi-group: survives a contiguous tear of m×G consecutive codes', async () => {
+  it('multi-group: survives a contiguous tear of m*G consecutive codes', async () => {
     const rand = mulberry32(2004);
     const backup = await makeBackup(rand, 400_000); // several groups at S=835
     const plan = backup.plan;
@@ -109,14 +109,14 @@ describe('erasure resilience', () => {
     const rand = mulberry32(2006);
     const backup = await makeBackup(rand, 20_000, 835, 50);
     const plan = backup.plan;
-    // Lose every second code — round-robin striping spreads this at exactly m per group.
+    // Lose every second code - round-robin striping spreads this at exactly m per group.
     const lost = new Set<number>();
     for (let i = 0; i < plan.totalChunks; i += 2) lost.add(i);
     let restored;
     try {
       restored = await restoreBackup(collectExcept(backup, lost));
     } catch {
-      // Depending on rounding a couple of groups may be one short — allow the
+      // Depending on rounding a couple of groups may be one short - allow the
       // documented fallback: drop half of DATA chunks only, keep parity.
       const lost2 = new Set<number>();
       for (let g = 0; g < plan.groupCount; g++) {

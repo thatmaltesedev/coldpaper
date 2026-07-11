@@ -1,5 +1,5 @@
 /**
- * Encryption layer. WebCrypto only — no hand-rolled primitives.
+ * Encryption layer. WebCrypto only - no hand-rolled primitives.
  *
  *   key        = PBKDF2-HMAC-SHA256(passphrase, salt, 600 000 iterations, 256 bit)
  *   envelope   = salt (16 bytes) || iv (12 bytes) || AES-256-GCM ciphertext+tag
@@ -75,7 +75,7 @@ export async function decrypt(
   } catch {
     throw new CpError(
       'BAD_PASSPHRASE',
-      'decryption failed — almost always a wrong passphrase. Your scanned codes are fine; check the passphrase and try again.',
+      'decryption failed, almost always a wrong passphrase. Your scanned codes are fine; check the passphrase and try again.',
     );
   }
 }

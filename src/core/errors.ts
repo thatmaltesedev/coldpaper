@@ -12,7 +12,7 @@ export type CpErrorCode =
   | 'INSUFFICIENT_CHUNKS'
   /** The backup is encrypted and no passphrase was supplied. */
   | 'PASSPHRASE_REQUIRED'
-  /** AES-GCM authentication failed — almost always a wrong passphrase. */
+  /** AES-GCM authentication failed - almost always a wrong passphrase. */
   | 'BAD_PASSPHRASE'
   /** The restored bytes do not hash to the fingerprint stored in the backup. */
   | 'HASH_MISMATCH'

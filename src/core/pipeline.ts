@@ -32,14 +32,14 @@ export const SOFT_FILE_WARNING = 500 * 1024;
 export interface CreateBackupOptions {
   fileName: string;
   fileBytes: Uint8Array;
-  /** Data bytes per chunk (S) — comes from the density preset. */
+  /** Data bytes per chunk (S) - comes from the density preset. */
   chunkSize: number;
-  /** Parity per group as a percentage of data slots (10–50). */
+  /** Parity per group as a percentage of data slots (10-50). */
   redundancyPercent: number;
   passphrase?: string;
   /** Yield to the event loop between groups so the UI can breathe. */
   onProgress?: (done: number, total: number) => void;
-  /** Tests only. Not part of the format — real backups always use 600 000. */
+  /** Tests only. Not part of the format - real backups always use 600 000. */
   kdfIterations?: number;
 }
 
@@ -51,7 +51,7 @@ export interface BackupResult {
   encrypted: boolean;
   /** SHA-256 of the original file. */
   fileHash: Uint8Array;
-  /** SHA-256 of the padded payload — printable fingerprint that never leaks plaintext. */
+  /** SHA-256 of the padded payload - printable fingerprint that never leaks plaintext. */
   payloadHash: Uint8Array;
   /** QR payloads, index 0..totalChunks-1 in print order. */
   chunks: Uint8Array[];
@@ -156,7 +156,7 @@ export async function restoreBackup(
   const plan = collected.plan;
   const encrypted = collected.encrypted;
   if (encrypted && (passphrase === undefined || passphrase === '')) {
-    throw new CpError('PASSPHRASE_REQUIRED', 'this backup is encrypted — enter its passphrase to restore');
+    throw new CpError('PASSPHRASE_REQUIRED', 'this backup is encrypted, enter its passphrase to restore');
   }
 
   // Reassemble the padded payload group by group.
@@ -190,7 +190,7 @@ export async function restoreBackup(
       if (isCpError(e, 'INSUFFICIENT_CHUNKS')) {
         throw new CpError(
           'INSUFFICIENT_CHUNKS',
-          `not enough codes captured yet (group ${g + 1} of ${plan.groupCount} is short) — scan more pages`,
+          `not enough codes captured yet (group ${g + 1} of ${plan.groupCount} is short), scan more pages`,
           { ...e.details, group: g },
         );
       }
@@ -209,7 +209,7 @@ export async function restoreBackup(
   try {
     meta = decodeMeta(inner);
   } catch {
-    throw new CpError('CORRUPT_PAYLOAD', 'reconstructed payload has no valid metadata block — rescan the pages');
+    throw new CpError('CORRUPT_PAYLOAD', 'reconstructed payload has no valid metadata block, rescan the pages');
   }
 
   const content = inner.subarray(meta.byteLength);
@@ -217,7 +217,7 @@ export async function restoreBackup(
   const bytes = wasCompressed ? decompress(content, meta.meta.fileSize) : Uint8Array.from(content);
 
   if (bytes.length !== meta.meta.fileSize) {
-    throw new CpError('HASH_MISMATCH', 'restored file has the wrong size — rescan the pages', {
+    throw new CpError('HASH_MISMATCH', 'restored file has the wrong size, rescan the pages', {
       expected: meta.meta.fileSize,
       actual: bytes.length,
     });
@@ -226,7 +226,7 @@ export async function restoreBackup(
   if (!bytesEqual(digest, meta.meta.sha256)) {
     throw new CpError(
       'HASH_MISMATCH',
-      'restored file failed its SHA-256 check — rescan the pages; if this repeats, one code may be mislabelled',
+      'restored file failed its SHA-256 check. Rescan the pages; if this repeats, one code may be mislabelled',
     );
   }
 

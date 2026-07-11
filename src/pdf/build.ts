@@ -1,7 +1,7 @@
 /**
  * Builds the printable PDF: a human-readable cover sheet followed by pages of
- * labelled QR codes. Everything a future stranger needs to restore the file —
- * including a written description of the format — is ON the paper.
+ * labelled QR codes. Everything a future stranger needs to restore the file -
+ * including a written description of the format - is ON the paper.
  */
 import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from 'pdf-lib';
 import { toHex } from '../core/bytes';
@@ -30,9 +30,16 @@ export interface PdfBuildOptions {
   onProgress?: (done: number, total: number) => void;
 }
 
-/** Replace anything Helvetica/Courier (WinAnsi) cannot draw. */
+/**
+ * Replace anything Helvetica/Courier (WinAnsi) cannot draw. The escaped list
+ * keeps the cp1252 punctuation that user filenames may legitimately contain
+ * (dashes, curly quotes, bullet, ellipsis, euro, trademark).
+ */
 function winAnsi(text: string): string {
-  return text.replace(/[^\x20-\x7e\xa0-\xff–—‘’“”•…€™]/g, '?');
+  return text.replace(
+    /[^\x20-\x7e\xa0-\xff\u2013\u2014\u2018\u2019\u201c\u201d\u2022\u2026\u20ac\u2122]/g,
+    '?',
+  );
 }
 
 function groupedHex(bytes: Uint8Array): string[] {
@@ -54,7 +61,7 @@ export async function buildPdf(options: PdfBuildOptions): Promise<Uint8Array> {
   const idHex = toHex(backup.backupId).toUpperCase();
 
   const doc = await PDFDocument.create();
-  doc.setTitle(`Coldpaper backup — ${fileName}`);
+  doc.setTitle(`Coldpaper backup - ${fileName}`);
   doc.setCreator(`coldpaper v${typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : 'dev'}`);
   doc.setProducer('coldpaper (pdf-lib)');
 

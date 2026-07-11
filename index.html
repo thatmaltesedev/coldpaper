@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Coldpaper — back up files onto paper</title>
+    <title>Coldpaper - back up files onto paper</title>
     <meta
       name="description"
-      content="Turn any file into printable QR codes and back. Encrypted, redundant, 100% in your browser — nothing ever leaves your device."
+      content="Turn any file into printable QR codes and back. Encrypted, redundant, 100% in your browser. Nothing ever leaves your device."
     />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
@@ -35,7 +35,7 @@
         <span class="brand-format">format v1</span>
       </div>
       <p class="tagline">
-        Back any file up onto printable paper — and get it back with a phone camera.
+        Back any file up onto printable paper, and get it back with a phone camera.
         Everything happens in this browser tab. Nothing is uploaded, ever.
       </p>
       <nav class="tabs" role="tablist" aria-label="Mode">
@@ -55,7 +55,7 @@
           <input id="file-input" class="visually-hidden" type="file" aria-hidden="true" tabindex="-1" />
           <strong>Drop a file here</strong>
           <span>or <span class="linkish">browse for one</span></span>
-          <small>Up to 5&nbsp;MB — paper backups shine under 500&nbsp;KB.</small>
+          <small>Up to 5&nbsp;MB. Paper backups shine under 500&nbsp;KB.</small>
         </div>
 
         <section id="file-card" class="card" hidden aria-label="Selected file">
@@ -92,7 +92,7 @@
           </div>
 
           <fieldset>
-            <legend>Passphrase <span class="legend-soft">(optional — leave empty for none)</span></legend>
+            <legend>Passphrase <span class="legend-soft">(optional, leave empty for none)</span></legend>
             <div class="options-row">
               <label class="stack">Passphrase
                 <input type="password" id="passphrase" autocomplete="new-password" spellcheck="false" />
@@ -104,7 +104,7 @@
             <p class="warn-text">
               There is no password reset. Lose this passphrase and the backup is unreadable. Forever.
             </p>
-            <p id="passphrase-error" class="error-text" role="alert" hidden>Passphrases don’t match.</p>
+            <p id="passphrase-error" class="error-text" role="alert" hidden>Passphrases don't match.</p>
           </fieldset>
 
           <p id="backup-summary" class="summary" aria-live="polite"></p>
@@ -123,12 +123,12 @@
           <p id="backup-result-line"></p>
           <div class="actions">
             <button type="button" id="download-pdf" class="primary big">Download PDF</button>
-            <button type="button" id="print-pdf" class="big">Print…</button>
+            <button type="button" id="print-pdf" class="big">Print</button>
             <button type="button" id="start-over" class="ghost">start over</button>
           </div>
           <div id="preview-strip" class="previews" aria-label="Page previews"></div>
           <p class="hint">
-            Print at 100% scale (“actual size”). Plain black &amp; white is fine — laser toner outlives
+            Print at 100% scale ("actual size"). Plain black &amp; white is fine; laser toner outlives
             inkjet if the paper ever gets wet. Keep the cover sheet: it explains how to restore.
           </p>
         </section>
@@ -152,7 +152,7 @@
 
         <div id="camera-wrap" class="camera-wrap" hidden>
           <video id="camera-video" muted playsinline></video>
-          <p id="camera-hint" class="muted">Point at each page — any order. Codes beep as they land.</p>
+          <p id="camera-hint" class="muted">Point at each page, in any order. Codes beep as they land.</p>
           <div class="actions">
             <button type="button" id="torch-btn" hidden>Torch</button>
             <button type="button" id="stop-camera">Stop camera</button>
@@ -161,7 +161,7 @@
 
         <div id="restore-drop" class="dropzone dropzone--slim" tabindex="0" role="button"
           aria-label="Drop page photos here to import them">
-          …or drop page photos / scans anywhere here
+          or drop page photos / scans anywhere here
         </div>
 
         <p id="import-progress" class="muted" role="status" hidden></p>
@@ -174,12 +174,12 @@
 
     <footer>
       <p class="privacy">
-        <strong>100% local.</strong> Your file never leaves this device — verify it yourself: open
-        DevTools → Network and watch: zero requests while backing up or restoring.
+        <strong>100% local.</strong> Your file never leaves this device. Verify it yourself: open
+        the DevTools Network tab and watch: zero requests while backing up or restoring.
       </p>
       <p id="offline-line">
         <a id="offline-link" href="./coldpaper-offline.html" download>Download the single-file offline copy</a>
-        — save it on a USB stick and keep it with your printed backup.
+        and save it on a USB stick with your printed backup.
       </p>
       <p>
         <a href="https://github.com/thatmaltesedev/coldpaper" rel="noopener">Source &amp; format spec</a>

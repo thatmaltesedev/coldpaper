@@ -3,8 +3,8 @@
  * the preview never lies. All units are PDF points (1/72"), top-down origin;
  * the PDF builder flips y at the end.
  *
- * 3×4 grid on both paper sizes: codes come out 55–58 mm wide, which keeps even
- * a v40 code's modules above 0.3 mm — inside what office printers and phone
+ * 3x4 grid on both paper sizes: codes come out 55-58 mm wide, which keeps even
+ * a v40 code's modules above 0.3 mm - inside what office printers and phone
  * cameras handle, with generous quiet zones.
  */
 export interface PaperSize {

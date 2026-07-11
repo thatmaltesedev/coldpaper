@@ -1,6 +1,6 @@
 /**
  * The credibility test, part 2: the ACTUAL printable PDF, rendered to page
- * images (pdf.js — a wholly independent PDF implementation), scanned with the
+ * images (pdf.js - a wholly independent PDF implementation), scanned with the
  * bundled zxing decoder, damaged, and restored byte-identically.
  *
  * This is "print it, tear a page off, restore anyway" minus the paper.

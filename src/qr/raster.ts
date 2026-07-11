@@ -7,7 +7,7 @@ export interface GrayBitmap {
   data: Uint8Array;
 }
 
-/** ISO 18004 asks for ≥4 modules of quiet zone; we render it into every bitmap. */
+/** ISO 18004 asks for at least 4 modules of quiet zone; we render it into every bitmap. */
 export const QUIET_ZONE_MODULES = 4;
 
 export function rasterizeMatrix(

@@ -1,6 +1,6 @@
 /**
  * zxing-wasm harness for Node tests: loads the wasm binary from node_modules
- * (no network) and decodes QR codes from raw bitmaps or encoded image bytes —
+ * (no network) and decodes QR codes from raw bitmaps or encoded image bytes -
  * the SAME decoder the app bundles, so tests exercise the shipped scan path.
  */
 import { readFileSync } from 'node:fs';
